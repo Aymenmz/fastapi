@@ -16,6 +16,7 @@ class UserInput(SQLModel):
     email: EmailStr
     password: str
 
-class UserOutput(UserInput):
+class UserOutput(SQLModel):
+    id: int
     email: EmailStr
     created_at: datetime
