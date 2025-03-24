@@ -1,8 +1,8 @@
 from fastapi import FastAPI, status, HTTPException, Depends
 from .database import lifespan, get_session
 from sqlmodel import Session, select
-from  .models import Post
-from .schemas import PostInput, PostOutput
+from  .models import Post, User
+from .schemas import PostInput, PostOutput, UserInput, UserOutput
 
 
 app = FastAPI(lifespan=lifespan)
@@ -74,4 +74,12 @@ def update_post(post_id: int, post: PostInput, db: Session = Depends(get_session
     db.commit()
     db.refresh(post_to_update)
     return post_to_update
+
+@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=UserOutput)
+def create_user(user: UserInput, db: Session = Depends(get_session)):
+    new_user = User(**user.model_dump())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
 

@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
 from sqlmodel import SQLModel
+from pydantic import EmailStr
 
 
 class PostInput(SQLModel):
@@ -9,4 +10,12 @@ class PostInput(SQLModel):
     published: Optional[bool] = True
 
 class PostOutput(PostInput):
+    created_at: datetime
+
+class UserInput(SQLModel):
+    email: EmailStr
+    password: str
+
+class UserOutput(UserInput):
+    email: EmailStr
     created_at: datetime
