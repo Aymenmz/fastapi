@@ -15,6 +15,7 @@ class UserOutput(SQLModel):
     created_at: datetime
 
 class PostOutput(PostInput):
+    id: int
     created_at: datetime
     owner_id: int
     owner : UserOutput
