@@ -1,4 +1,4 @@
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, Relationship
 from typing import Optional
 from sqlalchemy import Column, Boolean, text, TIMESTAMP
 from datetime import datetime
@@ -19,6 +19,10 @@ class Post(SQLModel, table=True):
         sa_column=Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     )
 
+    owner_id: int = Field(nullable=False, foreign_key="users.id", ondelete="CASCADE")
+
+    owner: Optional["User"] = Relationship(back_populates="posts")
+
 class User(SQLModel, table=True):
     __tablename__ = "users"
     
@@ -30,3 +34,4 @@ class User(SQLModel, table=True):
         default=None,
         sa_column=Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     )
+    posts: list[Post] = Relationship(back_populates="owner")
