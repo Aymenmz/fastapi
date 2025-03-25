@@ -25,4 +25,8 @@ app/*.egg-info/
 *.pyc/
 *.pyo/
 *.pyd/
-*.pyw/  
+*.pyw/
+.env
+*.env
+*.env/
+*.env/*
