@@ -1,10 +1,10 @@
 
 
-from ..models import Post
-from ..schemas import PostInput, PostOutput, TokenData
+from ..models import Post, Vote
+from ..schemas import PostInput, PostOutput, TokenData, PostWithVotes
 from ..database import get_session
 from fastapi import status, HTTPException, Depends, APIRouter
-from sqlmodel import Session, select
+from sqlmodel import Session, select, func
 from ..utils import hash
 from ..oauth2 import get_current_user
 from typing import Optional
@@ -34,6 +34,33 @@ def get_posts(db : Session = Depends(get_session), current_user: TokenData = Dep
     #NOTE - If I wanna show just lits the posts of the user that is logged in
     # posts = db.exec(select(Post).where(Post.owner_id == current_user.user_id)).all()
     return posts
+
+@router.get("/votes", response_model=list[PostWithVotes])
+def get_posts_with_votes(
+    db: Session = Depends(get_session),
+    current_user: TokenData = Depends(get_current_user),
+    limit: int = 10, 
+    skip: int = 0,
+    search: Optional[str] = ""
+):
+    statement = (
+        select(Post, func.count(Vote.post_id).label("votes"))
+        .join(Vote, Post.id == Vote.post_id, isouter=True)
+        .where(func.lower(Post.title).contains(search.lower()))
+        .group_by(Post.id).limit(limit).offset(skip)
+    )
+
+    results = db.exec(statement).all()  
+
+    response = [
+        {
+            "post": post,
+            "votes": votes
+        }
+        for post, votes in results
+    ]
+
+    return response
 
 
 """
@@ -65,7 +92,7 @@ def create_post(post: PostInput, db: Session = Depends(get_session), current_use
 @router.get("/{post_id}", response_model=PostOutput)
 def get_post(post_id: int, db: Session = Depends(get_session), current_user: TokenData = Depends(get_current_user)):
     post = db.get(Post, post_id)
-    
+   
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with {post_id} not found")
     
@@ -73,6 +100,30 @@ def get_post(post_id: int, db: Session = Depends(get_session), current_user: Tok
     #if post.owner_id != current_user.user_id:
         #raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You are not allowed to see this post")
     return post
+
+@router.get("/votes/{post_id}", response_model=PostWithVotes)
+def get_post(
+    post_id: int,
+    db: Session = Depends(get_session),
+    current_user: TokenData = Depends(get_current_user)
+):
+    statement = (
+        select(Post, func.count(Vote.post_id).label("votes"))
+        .join(Vote, Post.id == Vote.post_id, isouter=True)
+        .where(Post.id == post_id) 
+        .group_by(Post.id)
+    )
+
+    result = db.exec(statement).first() 
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Post with id {post_id} not found"
+        )
+
+    post, votes = result
+    return {"post": post, "votes": votes}
+
 
 
 """

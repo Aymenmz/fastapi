@@ -22,6 +22,7 @@ class Post(SQLModel, table=True):
     owner_id: int = Field(nullable=False, foreign_key="users.id", ondelete="CASCADE")
 
     owner: Optional["User"] = Relationship(back_populates="posts")
+    
 
 class User(SQLModel, table=True):
     __tablename__ = "users"
@@ -35,3 +36,10 @@ class User(SQLModel, table=True):
         sa_column=Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     )
     posts: list[Post] = Relationship(back_populates="owner")
+
+
+class Vote(SQLModel, table=True):
+    __tablename__ = "votes"
+   
+    post_id: int = Field(nullable=False, foreign_key="posts.id", ondelete="CASCADE", primary_key=True)
+    user_id: int = Field(nullable=False, foreign_key="users.id", ondelete="CASCADE", primary_key=True)

@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import Optional
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel, Field
 from pydantic import EmailStr
+from .models import Post
 
 
 class PostInput(SQLModel):
@@ -35,3 +36,11 @@ class Token(SQLModel):
 
 class TokenData(SQLModel):
     user_id: int
+
+class VoteInput(SQLModel):
+    post_id: int
+    direction: int = Field(..., ge=0, le=1)
+
+class PostWithVotes(SQLModel):
+    post: Post
+    votes: int
