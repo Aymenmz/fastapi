@@ -24,7 +24,7 @@ app.include_router(vote.router)
 
 @app.get("/")
 def root():
-    return {"data": "Hello World from FastAPI"}
+    return "Hello World from FastAPI"
 
 
 

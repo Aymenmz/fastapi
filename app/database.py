@@ -1,7 +1,6 @@
 # Code above omitted 👆
 
-from sqlmodel import SQLModel, create_engine, Session
-from fastapi import FastAPI
+from sqlmodel import create_engine, Session
 from .config import settings
 
 

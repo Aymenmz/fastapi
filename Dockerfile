@@ -1,11 +1,17 @@
-FROM python:3.12
+FROM python:3.12-slim
 
+# Set working directory
 WORKDIR /usr/src/app
 
-# 👇 Install netcat explicitly (no more virtual package error)
-RUN apt-get update && apt-get install -y netcat-openbsd
 
-COPY requirements.txt ./
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends netcat-openbsd && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+
+COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .

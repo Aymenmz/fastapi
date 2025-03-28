@@ -1,5 +1,4 @@
 from jose import JWTError, jwt
-import secrets
 from datetime import datetime, timedelta
 from .schemas import TokenData
 from fastapi import Depends, HTTPException, status
