@@ -22,8 +22,11 @@ jobs:
       ACCESS_TOKEN_EXPIRE_MINUTES: 30
 
     steps:
-      - name: 📥 Checkout repo
+      - name: 📥 Checkout repo using PAT
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_GITHUB_PAT }}
+
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v4
