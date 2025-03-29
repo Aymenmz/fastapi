@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fastapi
+spec:
+  source:
+    repoURL: https://github.com/Aymenmz/fastapi/infra/fastapi
+    targetRevision: HEAD
+    path: fastapi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: fastapi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
