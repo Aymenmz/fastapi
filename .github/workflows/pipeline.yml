@@ -61,6 +61,8 @@ jobs:
           sudo mv kustomize /usr/local/bin/
 
       - name: 📝 Update Kustomize image tag
+        env:
+          CI_PAT: ${{ secrets.CI_GITHUB_PAT }}
         run: |
           cd infra/fastapi
           kustomize edit set image aymendocker99/fastapi=aymendocker99/fastapi:${{ env.TAG }}
@@ -69,4 +71,7 @@ jobs:
           git config user.email github-actions@github.com
           git add infra/fastapi/kustomization.yaml
           git commit -m "chore: update image tag to ${{ env.TAG }}"
-          git push
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
+          git remote set-url origin https://x-access-token:${CI_PAT}@github.com/${{ github.repository }}
+          git push origin HEAD:${{ github.ref_name }}
