@@ -1,6 +1,12 @@
 name: Build and Deploy Code
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - "infra/**"
+  pull_request:
+    paths-ignore:
+      - "infra/**"
 
 jobs:
   test-and-build:
@@ -60,27 +66,25 @@ jobs:
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
           sudo mv kustomize /usr/local/bin/
 
-      - name: 📝 Update Kustomize image tag
+      - name: 💡 Replace Git origin to use PAT
         env:
           CI_PAT: ${{ secrets.CI_GITHUB_PAT }}
+        run: |
+          git remote remove origin
+          git remote add origin https://x-access-token:${CI_PAT}@github.com/${{ github.repository }}.git
+
+      - name: 📝 Update Kustomize image tag and push
+        env:
           TAG: ${{ env.TAG }}
-          REPO: ${{ github.repository }}
           BRANCH: ${{ github.ref_name }}
         run: |
-            cd infra/fastapi
-            kustomize edit set image aymendocker99/fastapi=aymendocker99/fastapi:$TAG
-            cd ../..
-        
-            git config --global user.name "github-actions"
-            git config --global user.email "github-actions@github.com"
-        
-            git add infra/fastapi/kustomization.yaml
-            git commit -m "chore: update image tag to $TAG" || echo "nothing to commit"
-        
-            git remote remove origin
-            git remote add origin https://x-access-token:${CI_PAT}@github.com/${REPO}.git
-        
-            git push origin HEAD:$BRANCH
-        
+          cd infra/fastapi
+          kustomize edit set image aymendocker99/fastapi=aymendocker99/fastapi:$TAG
+          cd ../..
 
-        
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git add infra/fastapi/kustomization.yaml
+          git commit -m "chore: update image tag to $TAG" || echo "No changes to commit"
+          git push origin HEAD:$BRANCH
