@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1
+# Ensure the schema URL is accessible or use a local schema if needed
+kind: Kustomization
+
+resources:
+- deploy.yaml
+- ingress.yaml
+- namespace.yaml
+- service.yaml
+
+namespace: fastapi
+images:
+- name: aymendocker99/fastapi
+  newTag: latest
