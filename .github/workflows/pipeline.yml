@@ -82,10 +82,9 @@ jobs:
           TAG: ${{ env.TAG }}
         run: |
           cd infra/fastapi
-
-          kustomize edit set image aymendocker99/fastapi=aymendocker99/fastapi:${{ env.TAG }}
+          kustomize edit set image aymendocker99/fastapi:latest=aymendocker99/fastapi:$TAG
           cd ../..
-          
+
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           
