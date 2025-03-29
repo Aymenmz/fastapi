@@ -11,4 +11,4 @@ resources:
 namespace: fastapi
 images:
 - name: aymendocker99/fastapi
-  tag: latest
+  newTag: latest
