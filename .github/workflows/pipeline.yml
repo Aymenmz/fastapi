@@ -80,9 +80,10 @@ jobs:
         env:
           CI_PAT: ${{ secrets.CI_GITHUB_PAT }}
           TAG: ${{ env.TAG }}
+          REPO_URL: aymendocker99/fastapi
         run: |
           cd infra/fastapi
-          kustomize edit set image aymendocker99/fastapi:latest=aymendocker99/fastapi:$TAG
+          kustomize edit set image $REPO_URL=$REPO_URL:$TAG
           cd ../..
 
           git config --global user.name "github-actions"
