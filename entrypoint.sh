@@ -2,12 +2,15 @@
 
 set -e
 
+# Set default values if not provided
 : "${DATABASE_HOSTNAME:=postgres}"
 : "${DATABASE_PORT:=5432}"
 
 echo "⏳ Waiting for PostgreSQL at $DATABASE_HOSTNAME:$DATABASE_PORT..."
 
-while ! nc -z $DATABASE_HOSTNAME $DATABASE_PORT; do
+# Wait until the DB is reachable
+while ! nc -z "$DATABASE_HOSTNAME" "$DATABASE_PORT" >/dev/null 2>&1; do
+  echo "⏱️  Waiting for PostgreSQL to be ready..."
   sleep 1
 done
 
