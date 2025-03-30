@@ -12,4 +12,4 @@ resources:
 namespace: fastapi
 images:
 - name: aymendocker99/fastapi
-  newTag: 79d413bc48a175444401b6a5b7c4450e135e6605
+  newTag: 08502dde409321ed4fe1dde18ca8531eeb80720b
