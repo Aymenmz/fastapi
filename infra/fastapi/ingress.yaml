@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: fastapi.ocpms.net
+  - host: fastapi.maiziz.org
     http:
       paths:
       - path: /
