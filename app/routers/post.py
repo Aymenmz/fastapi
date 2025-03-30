@@ -16,8 +16,6 @@ router = APIRouter(
     tags=["Posts"]
 )
 
-
-
 """
     The get_posts function is responsible for returning a list of posts.
     It receives the following parameters: db, current_user, limit, skip, and search.

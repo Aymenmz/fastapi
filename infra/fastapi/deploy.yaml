@@ -29,4 +29,12 @@ spec:
             value: postgres
           - name: DATABASE_PASSWORD
             value: postgres
+          - name: SECRET_KEY
+            value: supersecretkey
+          - name: ALGORITHM
+            value: HS256
+          - name: ACCESS_TOKEN_EXPIRE_MINUTES
+            value: "30"
+        limits:
+
 
