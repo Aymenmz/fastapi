@@ -3,10 +3,10 @@ name: Build and Deploy
 on:
   push:
     paths-ignore:
-      - "infra/**"
+      - "infra/**/kustomization.yaml"
   pull_request:
     paths-ignore:
-      - "infra/**"
+      - "infra/**/kustomization.yaml"
 
 jobs:
   build-and-deploy:
