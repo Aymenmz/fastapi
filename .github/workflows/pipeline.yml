@@ -14,8 +14,7 @@ jobs:
 
     env:
       TAG: ${{ github.sha }}
-      REPO_NAME: aymendocker99/fastapi
-      REPOSITORY_URL: aymendocker99/fastapi:${{ github.sha }}
+      REPOSITORY_URL: aymendocker99/fastapi
       DATABASE_HOSTNAME: localhost
       DATABASE_PORT: 5432
       DATABASE_NAME: fastapi
