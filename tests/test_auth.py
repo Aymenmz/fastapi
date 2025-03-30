@@ -1,12 +1,11 @@
 def test_login(client):
-    # First, register the user with JSON
+
     payload = {
         "email": "loginuser@example.com",
         "password": "loginpass"
     }
     client.post("/users", json=payload)
 
-    # Then, login with FORM data
     response = client.post(
         "/login",
         data={"username": payload["email"], "password": payload["password"]},
