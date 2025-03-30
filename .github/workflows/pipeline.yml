@@ -49,7 +49,7 @@ jobs:
       - name: 🐳 Build and Push Docker Image
         run: |
           docker build -t $REPOSITORY_URL:$TAG .
-          docker push $REPOSITORY_URL
+          docker push $REPOSITORY_URL:$TAG
 
       - name: 🛠 Install Kustomize
         run: |
