@@ -11,4 +11,4 @@ def test_create_user(client):
     assert post["email"] == payload["email"]
     assert "id" in post
     assert "created_at" in post
-    assert "password" not in post  # Make sure it's excluded
+    assert "password" not in post
