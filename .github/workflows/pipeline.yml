@@ -60,7 +60,7 @@ jobs:
       - name: 📝 Patch Kustomize with new image tag
         run: |
           cd infra/fastapi
-          kustomize edit set image $REPO_NAME=$REPOSITORY_URL
+          kustomize edit set image $REPOSITORY_URL:$TAG
           cat kustomization.yaml
 
       - name: 🔁 Commit and Push Manifest Update
