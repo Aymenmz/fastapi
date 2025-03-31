@@ -26,9 +26,6 @@ app.include_router(vote.router)
 def root():
     return "Hello World from FastAPI"
 
-@app.get("/health")
-def health_check():
-    return {"status": "ok"}
 
 
 
