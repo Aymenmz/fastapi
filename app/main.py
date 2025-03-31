@@ -3,13 +3,11 @@ from fastapi import FastAPI
 from .utils import hash
 from .routers import post, user, auth, vote
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
 
 
 app = FastAPI()
 
-app.add_middleware(HTTPSRedirectMiddleware)
 
 origins = ["*"]
 
