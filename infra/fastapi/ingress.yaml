@@ -3,8 +3,15 @@ kind: Ingress
 metadata:
   name: fastapi-ingress
   namespace: fastapi
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - fastapi.maiziz.org
+    secretName: fastapi-tls
   rules:
   - host: fastapi.maiziz.org
     http:
