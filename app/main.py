@@ -1,13 +1,10 @@
 from fastapi import FastAPI, Request
-#from .database import lifespan
-from .utils import hash
-from .routers import post, user, auth, vote, ai
 from fastapi.middleware.cors import CORSMiddleware
 
-
+from .utils import hash
+from .routers import post, user, auth, vote, ai
 
 app = FastAPI()
-
 
 origins = ["*"]
 
@@ -27,23 +24,20 @@ app.include_router(ai.router)
 
 @app.get("/")
 async def root(request: Request):
-    # First: Cloudflare header
-    client_ip = request.headers.get("cf-connecting-ip")
+    # Prefer Cloudflare's header, then X-Forwarded-For, then client.host
+    client_ip = (
+        request.headers.get("cf-connecting-ip")
+        or request.headers.get("x-forwarded-for")
+        or request.client.host
+    )
 
-    # Fallback to x-forwarded-for or request.client
-    if not client_ip:
-        forwarded_for = request.headers.get("x-forwarded-for")
-        if forwarded_for:
-            client_ip = forwarded_for.split(",")[0].strip()
-        else:
-            client_ip = request.client.host
+    # If x-forwarded-for has multiple IPs, get the first
+    if "," in client_ip:
+        client_ip = client_ip.split(",")[0].strip()
 
-    current_user = "Anonymous"  # You can replace with actual logic
+    current_user = "Anonymous"  # Replace with actual authentication logic
+
     return {
         "message": f"Welcome {current_user}!",
         "ip": client_ip
     }
-
-
-
-
