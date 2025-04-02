@@ -44,3 +44,9 @@ class VoteInput(SQLModel):
 class PostWithVotes(SQLModel):
     post: Post
     votes: int
+
+class PromptRequest(SQLModel):
+    prompt: str
+
+class PromptResponse(SQLModel):
+    response: str

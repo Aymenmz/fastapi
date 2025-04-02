@@ -4,6 +4,7 @@ metadata:
   name: fastapi-ingress
   namespace: fastapi
   annotations:
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     cert-manager.io/cluster-issuer: letsencrypt-staging
 spec:
