@@ -30,7 +30,7 @@ async def root(request: Request):
         or request.headers.get("x-forwarded-for")
         or request.client.host
     )
-
+    
     # If x-forwarded-for has multiple IPs, get the first
     if "," in client_ip:
         client_ip = client_ip.split(",")[0].strip()
@@ -38,6 +38,8 @@ async def root(request: Request):
     current_user = "Anonymous"  # Replace with actual authentication logic
 
     return {
-        "message": f"Welcome {current_user}!",
-        "ip": client_ip
-    }
+    "welcome": f"👋 Hello {current_user}!",
+    "info": "🚀 You’ve reached the FastAPI backend running on Kubernetes!",
+    "ip": f"📍 Your public IP is {client_ip}",
+    "message": "Explore our features at /docs"
+}
