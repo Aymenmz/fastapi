@@ -27,19 +27,23 @@ app.include_router(ai.router)
 
 @app.get("/")
 async def root(request: Request):
-    # Grab original client IP from headers
-    forwarded_for = request.headers.get("x-forwarded-for")
-    client_ip = forwarded_for.split(",")[0].strip() if forwarded_for else request.client.host
+    # Prefer Cloudflare's header for public IP
+    client_ip = request.headers.get("cf-connecting-ip")
 
-    # This assumes you have some auth system, stub here:
-    current_user = "Anonymous"
+    # Fallback to x-forwarded-for if behind proxy
+    if not client_ip:
+        forwarded_for = request.headers.get("x-forwarded-for")
+        if forwarded_for:
+            client_ip = forwarded_for.split(",")[0].strip()
+        else:
+            client_ip = request.client.host
+
+    current_user = "Anonymous"  # Replace with actual auth logic if needed
 
     return {
         "message": f"Welcome {current_user}!",
         "ip": client_ip
     }
-
-
 
 
 
