@@ -39,7 +39,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: mistral-secrets
-                key: MISTRAL_API_KE
+                key: MISTRAL_API_KEY
           - name: MISTRAL_MODEL
             value: mistral-large-latest
           - name: TEMPERATURE
