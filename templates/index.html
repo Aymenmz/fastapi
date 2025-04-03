@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AI DevOps Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🧑‍💻 AI DevOps IaC Generator</h1>
+        <form method="post" action="{{ url_for('generate') }}">
+            <textarea name="intent" placeholder="Describe your infrastructure request" required>{{ intent or '' }}</textarea>
+
+            <select name="target_format">
+                <option value="terraform" {% if target_format == "terraform" %}selected{% endif %}>Terraform</option>
+                <option value="kubernetes" {% if target_format == "kubernetes" %}selected{% endif %}>Kubernetes YAML</option>
+            </select>
+
+            <button type="submit">✨ Generate IaC</button>
+        </form>
+
+        {% if iac_result %}
+            <h2>Generated {{ target_format }}:</h2>
+            <pre>{{ iac_result }}</pre>
+        {% endif %}
+    </div>
+</body>
+</html>

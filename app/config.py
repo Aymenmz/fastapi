@@ -10,6 +10,10 @@ class Settings(BaseSettings):
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int
+    mistral_api_key: str
+    mistral_model: str = "mistral-large-latest"
+    temperature: float = 0.1        
+
 
     model_config = ConfigDict(env_file=".env")
 

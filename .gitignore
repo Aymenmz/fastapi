@@ -32,3 +32,5 @@ app/*.egg-info/
 *.env/*
 .pytest_cache/
 __pycache__/
+mistral-secret.json
+nbs/

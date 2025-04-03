@@ -1,8 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from starlette.middleware.sessions import SessionMiddleware
 
 from .utils import hash
-from .routers import post, user, auth, vote, ai
+from .routers import post, user, auth, vote, ai, ai_devops_assistant
+from .config import settings
 
 app = FastAPI()
 
@@ -16,11 +19,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
+
 app.include_router(post.router)
 app.include_router(user.router)
 app.include_router(auth.router)
 app.include_router(vote.router)
 app.include_router(ai.router)
+app.include_router(ai_devops_assistant.router)
+
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 async def root(request: Request):

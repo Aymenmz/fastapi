@@ -35,6 +35,17 @@ spec:
             value: HS256
           - name: ACCESS_TOKEN_EXPIRE_MINUTES
             value: "30"
+          - name: MISTRAL_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: mistral-secrets
+                key: MISTRAL_API_KE
+          - name: MISTRAL_MODEL
+            value: mistral-large-latest
+          - name: TEMPERATURE
+            value: "0.1"
+          
+
         limits:
 
 

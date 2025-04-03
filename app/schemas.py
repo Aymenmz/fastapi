@@ -3,6 +3,7 @@ from typing import Optional
 from sqlmodel import SQLModel, Field
 from pydantic import EmailStr
 from .models import Post
+from pydantic import BaseModel
 
 
 class PostInput(SQLModel):
@@ -50,3 +51,7 @@ class PromptRequest(SQLModel):
 
 class PromptResponse(SQLModel):
     response: str
+
+class IaCRequest(BaseModel):
+    intent: str
+    target_format: str
